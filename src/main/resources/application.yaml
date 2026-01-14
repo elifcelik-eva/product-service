@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: product-service
+  profiles:
+    active: localhost
+  config:
+    import: "optional:configserver:http://localhost:8888"
+  main:
+    allow-bean-definition-overriding: true
+info:
+  component: Product Service
+
+
+server:
+  port: 9788
+logging:
+  level:
+    #root: debug --> root düzeyinde
+    root: off
+    com.elifcelik: debug # paket düzeyinde
+---
+
+spring:
+  config:
+    activate:
+      on-profile: localhost
+
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/stock_management"
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        default_schema: stock_management

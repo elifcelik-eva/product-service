@@ -1,0 +1,59 @@
+package com.elifcelik.stockmanagement.productservice.service.impl;
+
+import com.elifcelik.stockmanagement.productservice.enums.Language;
+import com.elifcelik.stockmanagement.productservice.exception.enums.FriendlyMessageCodes;
+import com.elifcelik.stockmanagement.productservice.exception.enums.exceptions.ProductNotCreateException;
+import com.elifcelik.stockmanagement.productservice.repository.entity.Product;
+import com.elifcelik.stockmanagement.productservice.repository.entity.ProductRepository;
+import com.elifcelik.stockmanagement.productservice.request.ProductCreateRequest;
+import com.elifcelik.stockmanagement.productservice.request.ProductUpdateRequest;
+import com.elifcelik.stockmanagement.productservice.service.ProductService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class ProductServiceImpl implements ProductService {
+    private final ProductRepository productRepository;
+    @Override
+    public Product createProduct(Language language, ProductCreateRequest productCreateRequest) {
+        log.debug("[{}] [createProduct] -> request: {}", this.getClass().getSimpleName(), productCreateRequest);
+        try {
+            Product product = Product.builder()
+                    .productName(productCreateRequest.getProductName())
+                    .quantity(productCreateRequest.getQuantity())
+                    .price(productCreateRequest.getPrice())
+                    .deleted(false)
+                    .build();
+            Product productResponse = productRepository.save(product);
+            log.debug("[{}] [createProduct] -> response: {}", this.getClass().getSimpleName(), productResponse);
+            return productResponse;
+        }catch (Exception exception){
+            throw new ProductNotCreateException(language, FriendlyMessageCodes.PRODUCT_NOT_CREATED_EXCEPTION, "product request: " + productCreateRequest.toString());
+        }
+    }
+
+    @Override
+    public Product getProduct(Language language, Long productId) {
+        return null;
+    }
+
+    @Override
+    public List<Product> getProducts(Language language) {
+        return List.of();
+    }
+
+    @Override
+    public Product updateProduct(Language language, Long productId, ProductUpdateRequest productUpdateRequest) {
+        return null;
+    }
+
+    @Override
+    public Product deleProduct(Language language, Long productId) {
+        return null;
+    }
+}
