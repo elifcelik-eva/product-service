@@ -5,7 +5,9 @@ public enum FriendlyMessageCodes implements FriendlyMessageCode {
     SUCCESS(1002),
     ERROR(1001),
     PRODUCT_SUCCESSFULLY_CREATED(1500),
-    PRODUCT_NOT_CREATED_EXCEPTION(1501);
+    PRODUCT_NOT_CREATED(1501),
+    PRODUCT_NOT_FOUND(1502)
+    ;
     private final int value;
 
     FriendlyMessageCodes(int value){

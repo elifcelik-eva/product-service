@@ -3,6 +3,7 @@ package com.elifcelik.stockmanagement.productservice.service.impl;
 import com.elifcelik.stockmanagement.productservice.enums.Language;
 import com.elifcelik.stockmanagement.productservice.exception.enums.FriendlyMessageCodes;
 import com.elifcelik.stockmanagement.productservice.exception.exceptions.ProductNotCreateException;
+import com.elifcelik.stockmanagement.productservice.exception.exceptions.ProductNotFoundException;
 import com.elifcelik.stockmanagement.productservice.repository.entity.Product;
 import com.elifcelik.stockmanagement.productservice.repository.entity.ProductRepository;
 import com.elifcelik.stockmanagement.productservice.request.ProductCreateRequest;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -33,13 +35,19 @@ public class ProductServiceImpl implements ProductService {
             log.debug("[{}] [createProduct] -> response: {}", this.getClass().getSimpleName(), productResponse);
             return productResponse;
         }catch (Exception exception){
-            throw new ProductNotCreateException(language, FriendlyMessageCodes.PRODUCT_NOT_CREATED_EXCEPTION, "product request: " + productCreateRequest.toString());
+            throw new ProductNotCreateException(language, FriendlyMessageCodes.PRODUCT_NOT_CREATED, "product request: " + productCreateRequest.toString());
         }
     }
 
     @Override
     public Product getProduct(Language language, Long productId) {
-        return null;
+        log.debug("[{}] [createProduct] -> productId: {}", this.getClass().getSimpleName(), productId);
+        Product product = productRepository.getByProductIdAndDeletedFalse(productId);
+        if (Objects.isNull(product)){
+            throw new ProductNotFoundException(language, FriendlyMessageCodes.PRODUCT_NOT_FOUND, "product id: " + productId);
+        }
+        log.debug("[{}] [createProduct] -> response: {}", this.getClass().getSimpleName(), product);
+        return product;
     }
 
     @Override
