@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,7 +64,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(Language language, Long productId, ProductUpdateRequest productUpdateRequest) {
-        return null;
+        log.debug("[{}] [updateProduct] -> productId: {}", this.getClass().getSimpleName(), productId);
+        Product product = getProduct(language, productId);
+        product.setProductName(productUpdateRequest.getProductName());
+        product.setPrice(productUpdateRequest.getPrice());
+        product.setQuantity(productUpdateRequest.getQuantity());
+        Product productResponse = productRepository.save(product);
+        log.debug("[{}] [updateProduct] -> response: {}", this.getClass().getSimpleName(), productResponse);
+        return product;
     }
 
     @Override
@@ -71,3 +79,4 @@ public class ProductServiceImpl implements ProductService {
         return null;
     }
 }
+

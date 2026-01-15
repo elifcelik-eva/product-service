@@ -2,14 +2,17 @@ package com.elifcelik.stockmanagement.productservice.controller;
 
 import com.elifcelik.stockmanagement.productservice.enums.Language;
 import com.elifcelik.stockmanagement.productservice.exception.enums.FriendlyMessageCodes;
+import com.elifcelik.stockmanagement.productservice.exception.exceptions.ProductNotFoundException;
 import com.elifcelik.stockmanagement.productservice.exception.utils.FriendlyMessageUtils;
 import com.elifcelik.stockmanagement.productservice.repository.entity.Product;
 import com.elifcelik.stockmanagement.productservice.request.ProductCreateRequest;
+import com.elifcelik.stockmanagement.productservice.request.ProductUpdateRequest;
 import com.elifcelik.stockmanagement.productservice.response.FriendlyMessage;
 import com.elifcelik.stockmanagement.productservice.response.InternalApiResponse;
 import com.elifcelik.stockmanagement.productservice.response.ProductResponse;
 import com.elifcelik.stockmanagement.productservice.service.ProductService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -73,6 +76,26 @@ public class ProductController {
                 .build();
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{language}/products/{productId}")
+    public InternalApiResponse<ProductResponse> updateProduct(@PathVariable("language") Language language,
+                                                              @PathVariable("productId") Long productId,
+                                                              @Valid @RequestBody ProductUpdateRequest productUpdateRequest){
+        log.debug("[{}] [updateProduct] -> productId: {}, request: {}", this.getClass().getSimpleName(), productId, productUpdateRequest);
+        Product product = productService.updateProduct(language, productId, productUpdateRequest);
+        ProductResponse productResponse = convertProductResponse(product);
+        log.debug("[{}] [updateProduct] -> response: {}", this.getClass().getSimpleName(), productResponse);
+        return InternalApiResponse.<ProductResponse>builder()
+                .message(FriendlyMessage.builder()
+                        .title(FriendlyMessageUtils.getFriendlyMessage(language, FriendlyMessageCodes.SUCCESS))
+                        .description(FriendlyMessageUtils.getFriendlyMessage(language, FriendlyMessageCodes.PRODUCT_SUCCESSFULLY_UPDATED))
+                        .build())
+                .httpStatus(HttpStatus.OK)
+                .hasError(false)
+                .payload(productResponse)
+                .build();
+    }
+
     private ProductResponse convertProductResponse(Product product) {
         return ProductResponse.builder()
                 .productId(product.getProductId())
@@ -80,6 +103,7 @@ public class ProductController {
                 .quantity(product.getQuantity())
                 .price(product.getPrice())
                 .productCreatedDate(product.getProductCreatedDate())
+                .productUpdatedDate(product.getProductUpdatedDate())
                 .build();
     }
 

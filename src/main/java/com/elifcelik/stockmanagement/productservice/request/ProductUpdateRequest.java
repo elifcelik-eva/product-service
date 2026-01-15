@@ -1,8 +1,17 @@
 package com.elifcelik.stockmanagement.productservice.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import lombok.Data;
+
+@Data
 public class ProductUpdateRequest {
-    private Long productId;
+    @NotBlank
     private  String productName;
+    @NotNull
     private Integer quantity;
+    @NotNull
+    @Positive
     private Double price;
 }
