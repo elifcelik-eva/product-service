@@ -9,10 +9,14 @@ import com.elifcelik.stockmanagement.productservice.response.FriendlyMessage;
 import com.elifcelik.stockmanagement.productservice.response.InternalApiResponse;
 import com.elifcelik.stockmanagement.productservice.response.ProductResponse;
 import com.elifcelik.stockmanagement.productservice.service.ProductService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -41,7 +45,7 @@ public class ProductController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{language}/get/{productId}")
+    @GetMapping("/{language}/products/{productId}")
     public InternalApiResponse<ProductResponse> getProduct(@PathVariable("language") Language language,
                                                            @PathVariable("productId") Long productId){
         log.debug("[{}] [getProduct] -> productId: {}", this.getClass().getSimpleName(), productId);
@@ -55,7 +59,21 @@ public class ProductController {
                 .build();
     }
 
-    private static ProductResponse convertProductResponse(Product product) {
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{language}/products")
+    public InternalApiResponse<List<ProductResponse>> getProducts(@PathVariable("language") Language language){
+        log.debug("[{}] [getProducts]", this.getClass().getSimpleName());
+        List<Product> products = productService.getProducts(language);
+        List<ProductResponse> productResponses = convertProductResponseList(products);
+        log.debug("[{}] [getProducts] -> product count: {}", this.getClass().getSimpleName(), productResponses.size());
+        return InternalApiResponse.<List<ProductResponse>>builder()
+                .httpStatus(HttpStatus.OK)
+                .hasError(false)
+                .payload(productResponses)
+                .build();
+    }
+
+    private ProductResponse convertProductResponse(Product product) {
         return ProductResponse.builder()
                 .productId(product.getProductId())
                 .productName(product.getProductName())
@@ -63,5 +81,11 @@ public class ProductController {
                 .price(product.getPrice())
                 .productCreatedDate(product.getProductCreatedDate())
                 .build();
+    }
+
+    private List<ProductResponse> convertProductResponseList(List<Product> products){
+        return products.stream()
+                .map(this::convertProductResponse)
+                .collect(Collectors.toList());
     }
 }

@@ -41,18 +41,24 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProduct(Language language, Long productId) {
-        log.debug("[{}] [createProduct] -> productId: {}", this.getClass().getSimpleName(), productId);
+        log.debug("[{}] [getProduct] -> productId: {}", this.getClass().getSimpleName(), productId);
         Product product = productRepository.getByProductIdAndDeletedFalse(productId);
         if (Objects.isNull(product)){
             throw new ProductNotFoundException(language, FriendlyMessageCodes.PRODUCT_NOT_FOUND, "product id: " + productId);
         }
-        log.debug("[{}] [createProduct] -> response: {}", this.getClass().getSimpleName(), product);
+        log.debug("[{}] [getProduct] -> response: {}", this.getClass().getSimpleName(), product);
         return product;
     }
 
     @Override
     public List<Product> getProducts(Language language) {
-        return List.of();
+        log.debug("[{}] [getProducts]", this.getClass().getSimpleName());
+        List<Product> products = productRepository.getAllByDeletedFalse();
+        if (products.isEmpty()){
+            throw new ProductNotFoundException(language, FriendlyMessageCodes.PRODUCT_NOT_FOUND, "products not found");
+        }
+        log.debug("[{}] [getProducts] -> product count: {}", this.getClass().getSimpleName(), products.size());
+        return products;
     }
 
     @Override
