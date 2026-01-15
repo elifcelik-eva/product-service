@@ -1,15 +1,14 @@
-package com.elifcelik.stockmanagement.productservice.exception.enums.handler;
+package com.elifcelik.stockmanagement.productservice.exception.handler;
 
 import com.elifcelik.stockmanagement.productservice.exception.enums.FriendlyMessageCodes;
-import com.elifcelik.stockmanagement.productservice.exception.enums.exceptions.ProductNotCreateException;
-import com.elifcelik.stockmanagement.productservice.exception.enums.utils.FriendlyMessageUtils;
+import com.elifcelik.stockmanagement.productservice.exception.exceptions.ProductNotCreateException;
+import com.elifcelik.stockmanagement.productservice.exception.utils.FriendlyMessageUtils;
 import com.elifcelik.stockmanagement.productservice.response.FriendlyMessage;
 import com.elifcelik.stockmanagement.productservice.response.InternalApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.RestClient;
 
 import java.util.Collections;
 

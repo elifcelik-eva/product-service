@@ -1,9 +1,8 @@
 package com.elifcelik.stockmanagement.productservice.controller;
 
 import com.elifcelik.stockmanagement.productservice.enums.Language;
-import com.elifcelik.stockmanagement.productservice.exception.enums.FriendlyMessageCode;
 import com.elifcelik.stockmanagement.productservice.exception.enums.FriendlyMessageCodes;
-import com.elifcelik.stockmanagement.productservice.exception.enums.utils.FriendlyMessageUtils;
+import com.elifcelik.stockmanagement.productservice.exception.utils.FriendlyMessageUtils;
 import com.elifcelik.stockmanagement.productservice.repository.entity.Product;
 import com.elifcelik.stockmanagement.productservice.request.ProductCreateRequest;
 import com.elifcelik.stockmanagement.productservice.response.FriendlyMessage;

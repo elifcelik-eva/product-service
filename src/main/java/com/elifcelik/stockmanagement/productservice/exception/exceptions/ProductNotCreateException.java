@@ -1,8 +1,8 @@
-package com.elifcelik.stockmanagement.productservice.exception.enums.exceptions;
+package com.elifcelik.stockmanagement.productservice.exception.exceptions;
 
 import com.elifcelik.stockmanagement.productservice.enums.Language;
 import com.elifcelik.stockmanagement.productservice.exception.enums.FriendlyMessageCode;
-import com.elifcelik.stockmanagement.productservice.exception.enums.utils.FriendlyMessageUtils;
+import com.elifcelik.stockmanagement.productservice.exception.utils.FriendlyMessageUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 

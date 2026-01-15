@@ -1,4 +1,4 @@
-package com.elifcelik.stockmanagement.productservice.exception.enums.utils;
+package com.elifcelik.stockmanagement.productservice.exception.utils;
 
 import com.elifcelik.stockmanagement.productservice.enums.Language;
 import com.elifcelik.stockmanagement.productservice.exception.enums.FriendlyMessageCode;

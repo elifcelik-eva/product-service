@@ -2,7 +2,7 @@ package com.elifcelik.stockmanagement.productservice.service.impl;
 
 import com.elifcelik.stockmanagement.productservice.enums.Language;
 import com.elifcelik.stockmanagement.productservice.exception.enums.FriendlyMessageCodes;
-import com.elifcelik.stockmanagement.productservice.exception.enums.exceptions.ProductNotCreateException;
+import com.elifcelik.stockmanagement.productservice.exception.exceptions.ProductNotCreateException;
 import com.elifcelik.stockmanagement.productservice.repository.entity.Product;
 import com.elifcelik.stockmanagement.productservice.repository.entity.ProductRepository;
 import com.elifcelik.stockmanagement.productservice.request.ProductCreateRequest;
