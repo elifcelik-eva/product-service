@@ -16,5 +16,6 @@ public interface ProductService {
 
     Product updateProduct(Language language, Long productId, ProductUpdateRequest productUpdateRequest);
 
-    Product deleProduct(Language language, Long productId);
+    Product deleteProduct(Language language, Long productId);
+
 }

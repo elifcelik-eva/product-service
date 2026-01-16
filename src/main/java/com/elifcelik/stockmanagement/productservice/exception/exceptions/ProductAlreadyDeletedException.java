@@ -8,14 +8,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Getter
-public class ProductNotCreateException extends RuntimeException{
+public class ProductAlreadyDeletedException extends RuntimeException{
     private final Language language;
     private final FriendlyMessageCode friendlyMessageCode;
 
-    public ProductNotCreateException(Language language, FriendlyMessageCode friendlyMessageCode, String message) {
+    public ProductAlreadyDeletedException(Language language, FriendlyMessageCode friendlyMessageCode, String message) {
         super(FriendlyMessageUtils.getFriendlyMessage(language, friendlyMessageCode));
         this.language = language;
         this.friendlyMessageCode = friendlyMessageCode;
-        log.error("[ProductNotCreateException] -> message: {} developer message: {}", FriendlyMessageUtils.getFriendlyMessage(language,friendlyMessageCode), message);
+        log.error("[ProductAlreadyDeletedException] -> message: {} developer message: {}", FriendlyMessageUtils.getFriendlyMessage(language,friendlyMessageCode), message);
     }
 }

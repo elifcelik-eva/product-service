@@ -1,6 +1,7 @@
 package com.elifcelik.stockmanagement.productservice.exception.handler;
 
 import com.elifcelik.stockmanagement.productservice.exception.enums.FriendlyMessageCodes;
+import com.elifcelik.stockmanagement.productservice.exception.exceptions.ProductAlreadyDeletedException;
 import com.elifcelik.stockmanagement.productservice.exception.exceptions.ProductNotCreateException;
 import com.elifcelik.stockmanagement.productservice.exception.exceptions.ProductNotFoundException;
 import com.elifcelik.stockmanagement.productservice.exception.utils.FriendlyMessageUtils;
@@ -39,6 +40,20 @@ public class GlobalExceptionHandler {
                         .description(FriendlyMessageUtils.getFriendlyMessage(exception.getLanguage(), exception.getFriendlyMessageCode()))
                         .build())
                 .httpStatus(HttpStatus.NOT_FOUND)
+                .hasError(true)
+                .errorMessages(Collections.singletonList(exception.getMessage()))
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ProductAlreadyDeletedException.class)
+    public InternalApiResponse<String> handleProductAlreadyDeletedException(ProductAlreadyDeletedException exception){
+        return InternalApiResponse.<String>builder()
+                .message(FriendlyMessage.builder()
+                        .title(FriendlyMessageUtils.getFriendlyMessage(exception.getLanguage(), FriendlyMessageCodes.ERROR))
+                        .description(FriendlyMessageUtils.getFriendlyMessage(exception.getLanguage(), exception.getFriendlyMessageCode()))
+                        .build())
+                .httpStatus(HttpStatus.BAD_REQUEST)
                 .hasError(true)
                 .errorMessages(Collections.singletonList(exception.getMessage()))
                 .build();

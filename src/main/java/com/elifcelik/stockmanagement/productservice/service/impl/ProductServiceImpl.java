@@ -2,6 +2,7 @@ package com.elifcelik.stockmanagement.productservice.service.impl;
 
 import com.elifcelik.stockmanagement.productservice.enums.Language;
 import com.elifcelik.stockmanagement.productservice.exception.enums.FriendlyMessageCodes;
+import com.elifcelik.stockmanagement.productservice.exception.exceptions.ProductAlreadyDeletedException;
 import com.elifcelik.stockmanagement.productservice.exception.exceptions.ProductNotCreateException;
 import com.elifcelik.stockmanagement.productservice.exception.exceptions.ProductNotFoundException;
 import com.elifcelik.stockmanagement.productservice.repository.entity.Product;
@@ -13,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -71,12 +71,21 @@ public class ProductServiceImpl implements ProductService {
         product.setQuantity(productUpdateRequest.getQuantity());
         Product productResponse = productRepository.save(product);
         log.debug("[{}] [updateProduct] -> response: {}", this.getClass().getSimpleName(), productResponse);
-        return product;
+        return productResponse;
     }
 
     @Override
-    public Product deleProduct(Language language, Long productId) {
-        return null;
+    public Product deleteProduct(Language language, Long productId) {
+        log.debug("[{}] [deleteProduct] -> productId: {}", this.getClass().getSimpleName(), productId);
+        Product product = productRepository.findByProductId(productId)
+                .orElseThrow(() -> new ProductNotFoundException(language, FriendlyMessageCodes.PRODUCT_NOT_FOUND, "product not found productId: " + productId));
+        if (product.isDeleted()) {
+            throw new ProductAlreadyDeletedException(language, FriendlyMessageCodes.PRODUCT_ALREADY_DELETED, "product already deleted productId: " + productId);
+        }
+        product.setDeleted(true);
+        Product productResponse = productRepository.save(product);
+        log.debug("[{}] [deleteProduct] -> response: {}", this.getClass().getSimpleName(), productResponse);
+        return productResponse;
     }
 }
 

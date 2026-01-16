@@ -29,7 +29,7 @@ public class ProductController {
     private final ProductService productService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/{language}/create")
+    @PostMapping(value = "/{language}/products")
     public InternalApiResponse<ProductResponse> createProduct(@PathVariable("language")Language language,
                                                               @RequestBody ProductCreateRequest productCreateRequest){
         log.debug("[{}] [createProduct] -> request: {}", this.getClass().getSimpleName(), productCreateRequest);
@@ -89,6 +89,25 @@ public class ProductController {
                 .message(FriendlyMessage.builder()
                         .title(FriendlyMessageUtils.getFriendlyMessage(language, FriendlyMessageCodes.SUCCESS))
                         .description(FriendlyMessageUtils.getFriendlyMessage(language, FriendlyMessageCodes.PRODUCT_SUCCESSFULLY_UPDATED))
+                        .build())
+                .httpStatus(HttpStatus.OK)
+                .hasError(false)
+                .payload(productResponse)
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{language}/products/{productId}")
+    public InternalApiResponse<ProductResponse> deleteProduct(@PathVariable("language") Language language,
+                                                      @PathVariable("productId") Long productId){
+        log.debug("[{}] [deleteProduct] -> productId: {}", this.getClass().getSimpleName(), productId);
+        Product product = productService.deleteProduct(language, productId);
+        ProductResponse productResponse = convertProductResponse(product);
+        log.debug("[{}] [deleteProduct] -> response: {}", this.getClass().getSimpleName(), productResponse);
+        return InternalApiResponse.<ProductResponse>builder()
+                .message(FriendlyMessage.builder()
+                        .title(FriendlyMessageUtils.getFriendlyMessage(language, FriendlyMessageCodes.SUCCESS))
+                        .description(FriendlyMessageUtils.getFriendlyMessage(language, FriendlyMessageCodes.PRODUCT_SUCCESSFULLY_DELETED))
                         .build())
                 .httpStatus(HttpStatus.OK)
                 .hasError(false)
