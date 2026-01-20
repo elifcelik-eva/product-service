@@ -15,9 +15,9 @@ server:
   port: 9788
 logging:
   level:
-    #root: debug --> root düzeyinde
-    root: off
-    com.elifcelik: debug # paket düzeyinde
+    root: debug #debug --> root düzeyinde
+    #root: off
+    #com.elifcelik: debug # paket düzeyinde
 ---
 
 spring:
@@ -37,3 +37,10 @@ spring:
     properties:
       hibernate:
         default_schema: stock_management
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${random.uuid}
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
